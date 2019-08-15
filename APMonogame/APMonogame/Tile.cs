@@ -116,7 +116,8 @@ namespace APMonogame
                 }
             }
 
-            
+            //Console.WriteLine($"X position:{player.Position.X}, Y position:{player.Position.Y}");
+
 
             if (player.Position.Y > 1400)
             {

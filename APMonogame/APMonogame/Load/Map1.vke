@@ -19,9 +19,7 @@ Load=[Motion]
 
 
 Load=[TileSet]
-[newtileSet
-
-]
+[newtileSet1]
 
 Load=[StartLayer]
 
