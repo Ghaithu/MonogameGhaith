@@ -19,35 +19,7 @@ namespace APMonogame
         public override void LoadContent(ContentManager content, InputManager inputManager)
         {
             base.LoadContent(content, inputManager);
-            //fileManager = new FileManager();
-            //moveAnimation = new SpriteSheetAnimation();
-            //Vector2 tempFrames = Vector2.Zero;
-            //moveSpeed = 100f;
-
-            //fileManager.LoadContent("Load/Enemy.vke", attributes, contents);
-            //for (int i = 0; i < attributes.Count; i++)
-            //{
-            //    for (int j = 0; j < attributes[i].Count; j++)
-            //    {
-            //        switch (attributes[i][j])
-            //        {
-            //            case "Image":
-            //                image = this.content.Load<Texture2D>(contents[i][j]);
-            //                break;
-            //            case "Position":
-            //                string[] frames = contents[i][j].Split(' ');
-            //                position = new Vector2(int.Parse(frames[0]), int.Parse(frames[1]));
-            //                break;
-            //        }
-            //    }
-            //}
-
-            //gravity = 200f;
-            //velocity = Vector2.Zero;
-            //syncTilePosition = false;
-            //activateGravity = true;
-            //moveAnimation.Frames = new Vector2(3, 4);
-            //moveAnimation.LoadContent(content, image, "", position);
+            
 
         }
 

@@ -57,7 +57,7 @@ namespace APMonogame
 
         public override void Update(GameTime gameTime)
         {
-            Console.WriteLine(map1End);
+            //Console.WriteLine(map1End);
             inputManager.Update();
             player.Update(gameTime, inputManager, map.layer);
             enemy.Update(gameTime, inputManager, map.layer);

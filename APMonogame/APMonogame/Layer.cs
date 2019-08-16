@@ -13,7 +13,7 @@ namespace APMonogame
     {
         List<List<Tile>> tiles;
         List<List<string>> attributes, contents;
-        List<string> motion, solid;
+        List<string> motion, solid, trap,key, door1, door2, door3;
         FileManager fileManager;
         ContentManager content;
         Texture2D tileSheet;
@@ -31,6 +31,9 @@ namespace APMonogame
             fileManager = new FileManager();
             motion = new List<string>();
             solid = new List<string>();
+            trap = new List<string>();
+            door1 = new List<string>();
+            key = new List<string>();
             content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
 
             fileManager.LoadContent($"Load/{map.ID}.vke", attributes, contents);
@@ -44,12 +47,23 @@ namespace APMonogame
                         case "TileSet":
                             tileSheet = content.Load<Texture2D>(contents[i][j]);
                             break;
+                        case "Key":
+                            key.Add(contents[i][j]);
+                            break;
+                        case "Trap":
+                            trap.Add(contents[i][j]);
+                            break;
+                        case "Door1":
+                            door1.Add(contents[i][j]);
+                            break;
                         case "Solid":
                             solid.Add(contents[i][j]);
                             break;
+                        
                         case "Motion":
                             motion.Add(contents[i][j]);
                             break;
+                        
                         case "StartLayer":
                             List<Tile> tempTiles = new List<Tile>();
                             Tile.Motion tempMotion = Tile.Motion.Static;
@@ -60,11 +74,21 @@ namespace APMonogame
                                 string[] split = contents[i][k].Split(',');
                                 tempTiles.Add(new Tile());
 
-                                
+
+
                                 if (solid.Contains(contents[i][k]))
                                     tempState = Tile.State.Solid;
+                                else if (trap.Contains(contents[i][k]))
+                                    tempState = Tile.State.Trap;
+                                else if (door1.Contains(contents[i][k]))
+                                    tempState = Tile.State.Door;
+                                else if (key.Contains(contents[i][k]))
+                                    tempState = Tile.State.Key;
+
                                 else
                                     tempState = Tile.State.Passive;
+
+
                                 foreach(string m in motion)
                                 {
                                     getMotion = m.Split(':');                              
@@ -75,8 +99,6 @@ namespace APMonogame
                                         break;
                                     }
                                          
-
-
                                 }
 
                                 tempTiles[k].SetTile(tempState, tempMotion, new Vector2(k * 40, indexY * 40), tileSheet,

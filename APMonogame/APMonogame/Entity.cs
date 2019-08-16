@@ -14,7 +14,7 @@ namespace APMonogame
         protected int health;
         protected SpriteSheetAnimation moveAnimation;
         protected float moveSpeed;
-
+        
         protected ContentManager content;
         protected FileManager fileManager;
 

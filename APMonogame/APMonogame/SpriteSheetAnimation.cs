@@ -70,7 +70,7 @@ namespace APMonogame
             switchFrame = 100;
             frames = new Vector2(3, 4);
             currentFrame = new Vector2(0, 0);
-            sourceRect = new Rectangle((int)currentFrame.X * FrameWidth, (int)currentFrame.Y * FrameHeight + 12, FrameWidth, FrameHeight);
+            sourceRect = new Rectangle((int)currentFrame.X * FrameWidth, (int)currentFrame.Y * FrameHeight + 12, FrameWidth , FrameHeight);
         }
 
         public override void Update(GameTime gameTime)

@@ -12,24 +12,30 @@ namespace APMonogame
 {
     public class Tile:GameplayScreen
     {
-        public enum State { Solid, Passive };
+        public enum State { Solid, Passive, Trap, Door, Key };
         public enum Motion { Static, Horizontal, Vertical };
 
         GameplayScreen mapChange = new GameplayScreen();
         State state;
         Motion motion;
+        
         Vector2 position, prevPosition, velocity;
         Texture2D tileImage;
 
         float range;
         int counter;
-        int keyCounter;
+        int keyCounter = 0;
         bool increase;
         float moveSpeed;
         bool onTile;
+        int id = 0;
 
         Animation animation;
 
+        public void LoadContent(ContentManager content)
+        {
+            
+        }
         private Texture2D CropImage(Texture2D tileSheet, Rectangle tileArea)
         {
             Texture2D croppedImage = new Texture2D(tileSheet.GraphicsDevice, tileArea.Width, tileArea.Height);
@@ -67,6 +73,8 @@ namespace APMonogame
             counter = 0;
             animation = new Animation();
             animation.LoadContent(ScreenManager.Instance.Content, tileImage, "", position);
+
+
             
             
         }
@@ -149,14 +157,14 @@ namespace APMonogame
 
             }
 
-            if (player.Position.X >= 1181 && player.Position.Y >= 111)
-            {
-                GameplayScreen.id++;
-                GameplayScreen.loaded = false;
-                GameplayScreen.map1End = true;
-                player.Position = new Vector2(0, 0);
+            //if (player.Position.X >= 1181 && player.Position.Y >= 111)
+            //{
+            //    GameplayScreen.id++;
+            //    GameplayScreen.loaded = false;
+            //    GameplayScreen.map1End = true;
+            //    player.Position = new Vector2(0, 0);
 
-            }
+            //}
 
             //PLAYER COLLISION
             if (player.Rect.Intersects(rect) && state == State.Solid)
@@ -185,41 +193,31 @@ namespace APMonogame
                     player.Position -= player.Velocity;
                 }
             }
-            else if (player.Rect.Intersects(rect) && state == State.Passive)
+            
+            else if (player.Rect.Intersects(rect) && state == State.Trap)
+            {
+                player.Position = new Vector2(0, 0);
+                Console.WriteLine("You dead");
+
+            }
+
+            else if (player.Rect.Intersects(rect) && state == State.Key)
             {
                 tileImage.Dispose();
                 keyCounter++;
 
             }
+            else if(player.Rect.Intersects(rect) && state == State.Door && keyCounter == 2)
+            {
+                GameplayScreen.id++;
+                GameplayScreen.loaded = false;
+                GameplayScreen.map1End = true;
+                player.Position = new Vector2(0, 0);
+            }
 
-            //ENEMY COLLISION
-            //if (enemy.Rect.Intersects(rect) && state == State.Solid)
-            //{
-            //    FloatRect prevEnemy = new FloatRect(enemy.PrevPosition.X, enemy.PrevPosition.Y, enemy.Animation.FrameWidth, enemy.Animation.FrameHeight);
-
-            //    FloatRect prevTile = new FloatRect(prevPosition.X, prevPosition.Y, Layer.TileDimensions.X, Layer.TileDimensions.Y);
-                
-
-            //    if (enemy.Rect.Bottom >= rect.Top && prevEnemy.Bottom <= prevTile.Top)
-            //    {
-            //        enemy.Position = new Vector2(enemy.Position.X, position.Y - enemy.Animation.FrameHeight);
-            //        enemy.ActiveateGravity = false;
-            //        onTile = true;
-
-            //    }
-            //    else if (enemy.Rect.Top <= rect.Bottom && prevEnemy.Top >= prevTile.Bottom)
-
-            //    {
-            //        enemy.Position = new Vector2(enemy.Position.X, position.Y + 40);
-            //        enemy.Velocity = new Vector2(enemy.Velocity.X, 0);
-            //        enemy.ActiveateGravity = true;
-            //    }
-            //    else
-            //    {
-            //        enemy.Position -= enemy.Velocity;
-            //    }
-            //}
+            
             player.Animation.Position = player.Position;
+            //Console.WriteLine($"Current keys:{keyCounter}");
             
             
         }

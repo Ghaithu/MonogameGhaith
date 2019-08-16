@@ -12,7 +12,7 @@ namespace APMonogame
 {
     public class Player:Entity
     {
-        float jumpSpeed = 2200f;
+        float jumpSpeed = 2400f;
         public FloatRect Rect
         {
             get { return new FloatRect(position.X, position.Y, moveAnimation.FrameWidth, moveAnimation.FrameHeight); }
@@ -26,7 +26,7 @@ namespace APMonogame
             fileManager = new FileManager(); 
             moveAnimation = new SpriteSheetAnimation();
             Vector2 tempFrames = Vector2.Zero;
-            moveSpeed = 300f;
+            moveSpeed = 350f;
             
 
             fileManager.LoadContent("Load/Player.vke", attributes, contents);
