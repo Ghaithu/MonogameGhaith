@@ -36,9 +36,9 @@ namespace APMonogame
             //collision.UnloadContent();
         }
 
-        public void Update(GameTime gameTime, ref Player player)
+        public void Update(GameTime gameTime, ref Player player/*, ref Enemy enemy*/)
         {
-            layer.Update(gameTime, ref player);
+            layer.Update(gameTime, ref player/*, ref enemy*/);
 
         }
 

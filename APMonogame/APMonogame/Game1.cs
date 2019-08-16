@@ -9,19 +9,6 @@ namespace APMonogame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D background;
-        //private Texture2D shuttle;
-        //private Texture2D earth;
-
-        //Texture2D texture;
-        //Vector2 position;
-        //Rectangle drawRec;
-        //float alpha = 1.0f;
-        //float rotation = 1.0f;
-        //Vector2 origin = new Vector2(0, 0);
-        //float scale = 0.5f;
-        //SpriteEffects spriteEffect = SpriteEffects.FlipHorizontally;
-        //float zDepth = 0.1f;
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,10 +30,6 @@ namespace APMonogame
             background = Content.Load<Texture2D>("newBackground");
             this.IsMouseVisible = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //texture = this.content.Load<Texture2D>(@"evilsonic");
-            //drawRec = new Rectangle(0, 0, texture.Width, texture.Height);
-            //position = new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2);
-            //origin = new Vector2(texture.Width / 2, texture.Height / 2);
             ScreenManager.Instance.LoadContent(Content);
         }
         protected override void UnloadContent() { }

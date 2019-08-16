@@ -23,6 +23,7 @@ namespace APMonogame
 
         float range;
         int counter;
+        int keyCounter;
         bool increase;
         float moveSpeed;
         bool onTile;
@@ -70,7 +71,7 @@ namespace APMonogame
             
         }
 
-        public void Update(GameTime gameTime, ref Player player)
+        public void Update(GameTime gameTime, ref Player player/*, ref Enemy enemy*/)
         {
             counter++;
             prevPosition = position;
@@ -79,15 +80,16 @@ namespace APMonogame
                 counter = 0;
                 increase = !increase;
             }
+            //controls the motion of the tiles that are uploaded with horizontal attribute
             if (motion == Motion.Horizontal)
             {
                 if (increase)
                     velocity.X = moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 else
                     velocity.X = -moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                
+
             }
-            //VERTICAL BLOCK MOTION
+            //controls the motion of the tiles that are uploaded with Vertical attribute
             else if (motion == Motion.Vertical)
             {
                 if (increase)
@@ -95,12 +97,17 @@ namespace APMonogame
                 else
                     velocity.Y = -moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
+
             position += velocity;
             animation.Position = position;
 
-            FloatRect rect = new FloatRect(position.X, position.Y,40,40);
+            //instance of the FloatRect class that defines the intersection of rectangles with each other (player & tiles)
+            FloatRect rect = new FloatRect(position.X, position.Y, 40, 40);
 
-            if (onTile) { 
+            //triggered when Player is on the tile
+            if (onTile)
+            {
+                //
                 if (!player.SyncTilePosition)
                 {
 
@@ -108,22 +115,35 @@ namespace APMonogame
                     player.SyncTilePosition = true;
 
                 }
+                //if (!enemy.SyncTilePosition)
+                //{
+                //    enemy.Position += velocity;
+                //    enemy.SyncTilePosition = true;
+                //}
+
+                //if (enemy.Rect.Right < rect.Left || enemy.Rect.Left > rect.Right || enemy.Rect.Bottom != rect.Top)
+                //{
+                //    onTile = false;
+                //    enemy.ActiveateGravity = true;
+                //}
 
                 if (player.Rect.Right < rect.Left || player.Rect.Left > rect.Right || player.Rect.Bottom != rect.Top)
                 {
                     onTile = false;
                     player.ActiveateGravity = true;
                 }
-            }
 
-            //Console.WriteLine($"X position:{player.Position.X}, Y position:{player.Position.Y}");
+
+
+
+            }
 
 
             if (player.Position.Y > 1400)
             {
                 player.Position = new Vector2(0, 0);
                 Console.WriteLine("you're udner");
-                
+
 
 
 
@@ -135,16 +155,16 @@ namespace APMonogame
                 GameplayScreen.loaded = false;
                 GameplayScreen.map1End = true;
                 player.Position = new Vector2(0, 0);
-                
+
             }
 
-
+            //PLAYER COLLISION
             if (player.Rect.Intersects(rect) && state == State.Solid)
             {
                 FloatRect prevPlayer = new FloatRect(player.PrevPosition.X, player.PrevPosition.Y, player.Animation.FrameWidth, player.Animation.FrameHeight);
 
                 FloatRect prevTile = new FloatRect(prevPosition.X, prevPosition.Y, Layer.TileDimensions.X, Layer.TileDimensions.Y);
-                //Debug.WriteLine("collide");
+
 
                 if (player.Rect.Bottom >= rect.Top && prevPlayer.Bottom <= prevTile.Top)
                 {
@@ -165,9 +185,43 @@ namespace APMonogame
                     player.Position -= player.Velocity;
                 }
             }
+            else if (player.Rect.Intersects(rect) && state == State.Passive)
+            {
+                tileImage.Dispose();
+                keyCounter++;
+
+            }
+
+            //ENEMY COLLISION
+            //if (enemy.Rect.Intersects(rect) && state == State.Solid)
+            //{
+            //    FloatRect prevEnemy = new FloatRect(enemy.PrevPosition.X, enemy.PrevPosition.Y, enemy.Animation.FrameWidth, enemy.Animation.FrameHeight);
+
+            //    FloatRect prevTile = new FloatRect(prevPosition.X, prevPosition.Y, Layer.TileDimensions.X, Layer.TileDimensions.Y);
+                
+
+            //    if (enemy.Rect.Bottom >= rect.Top && prevEnemy.Bottom <= prevTile.Top)
+            //    {
+            //        enemy.Position = new Vector2(enemy.Position.X, position.Y - enemy.Animation.FrameHeight);
+            //        enemy.ActiveateGravity = false;
+            //        onTile = true;
+
+            //    }
+            //    else if (enemy.Rect.Top <= rect.Bottom && prevEnemy.Top >= prevTile.Bottom)
+
+            //    {
+            //        enemy.Position = new Vector2(enemy.Position.X, position.Y + 40);
+            //        enemy.Velocity = new Vector2(enemy.Velocity.X, 0);
+            //        enemy.ActiveateGravity = true;
+            //    }
+            //    else
+            //    {
+            //        enemy.Position -= enemy.Velocity;
+            //    }
+            //}
             player.Animation.Position = player.Position;
             
-            //Console.WriteLine("blocks should be moving");
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)

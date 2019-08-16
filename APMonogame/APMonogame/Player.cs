@@ -15,7 +15,7 @@ namespace APMonogame
         float jumpSpeed = 2200f;
         public FloatRect Rect
         {
-            get { return new FloatRect(position.X, position.Y, /*moveAnimation.FrameWidth*/55, /*moveAnimation.FrameHeight*/64); }
+            get { return new FloatRect(position.X, position.Y, moveAnimation.FrameWidth, moveAnimation.FrameHeight); }
 
         }
 
@@ -36,18 +36,11 @@ namespace APMonogame
                 {
                     switch (attributes[i][j])
                     {
-                        case "Health":
-                            health = int.Parse(contents[i][j]);
-                            break;
-                        case "Frames":
-                            string[] frames = contents[i][j].Split(' ');
-                            tempFrames = new Vector2(int.Parse(frames[0]), int.Parse(frames[1]));
-                            break;
                         case "Image":
                             image = this.content.Load<Texture2D>(contents[i][j]);
                             break;
                         case "Position":
-                            frames = contents[i][j].Split(' ');
+                            string[] frames = contents[i][j].Split(' ');
                             position = new Vector2(int.Parse(frames[0]), int.Parse(frames[1]));
                             break;
                     }
@@ -98,11 +91,7 @@ namespace APMonogame
                 velocity.Y = -jumpSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 activateGravity = true;
             }
-            //if(position.Y <= 10)
-            //{
-            //    position = new Vector2(0, 0);
-
-            //}
+            
 
             if (activateGravity)
                 velocity.Y += gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;

@@ -91,13 +91,13 @@ namespace APMonogame
             }
         }
 
-        public void Update(GameTime gameTime,ref Player player)
+        public void Update(GameTime gameTime,ref Player player/*, ref Enemy enemy*/)
         {
             for (int i = 0; i < tiles.Count; i++)
             {
                 for (int j = 0; j < tiles[i].Count; j++)
                 {
-                    tiles[i][j].Update(gameTime, ref player);
+                    tiles[i][j].Update(gameTime, ref player/*, ref enemy*/);
                 }
             }
         }

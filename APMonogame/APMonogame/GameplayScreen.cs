@@ -12,6 +12,7 @@ namespace APMonogame
     public class GameplayScreen:GameScreen
     {
         Player player;
+        Enemy enemy;
         Map map;
         public static int id = 1;
         public static bool loaded;
@@ -26,6 +27,7 @@ namespace APMonogame
         {
             base.LoadContent(content, inputManager);
             player = new Player();
+            enemy = new Enemy();
             map = new Map();
             player.LoadContent(content, inputManager);
             map.LoadContent(content,map, $"Map{id}");
@@ -49,6 +51,7 @@ namespace APMonogame
         {
             base.UnloadContent();
             player.UnloadContent();
+            enemy.UnloadContent();
              map.UnloadContent();  
         }
 
@@ -57,13 +60,15 @@ namespace APMonogame
             Console.WriteLine(map1End);
             inputManager.Update();
             player.Update(gameTime, inputManager, map.layer);
+            enemy.Update(gameTime, inputManager, map.layer);
+
             if (!loaded && map1End)
             {
                 loaded = true;               
                 map.LoadContent(content, map, $"Map{id}");
 
             }
-            map.Update(gameTime, ref player);
+            map.Update(gameTime, ref player/*, ref enemy*/);
             
         }
 
@@ -72,6 +77,7 @@ namespace APMonogame
             base.Draw(spriteBatch);
             map.Draw(spriteBatch);
             player.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
         }
     }
 }
