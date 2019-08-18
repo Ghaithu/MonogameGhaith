@@ -12,24 +12,28 @@ namespace APMonogame
         public float Top
         {
             get { return top; }
+            set { top = value; }
             
 
         }
          public float Bottom
         {
             get { return bottom; }
-            
+            set { bottom = value; }
+
         }
         
         public float Left
         {
             get { return left; }
-            
+            set { left = value; }
+
         }
         public float Right
         {
             get { return right; }
-            
+            set { right = value; }
+
         }
 
         public FloatRect(float x, float y, float width, float height)

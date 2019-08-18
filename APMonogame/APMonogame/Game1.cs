@@ -45,7 +45,7 @@ namespace APMonogame
         {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, 1280, 720), Color.White);
+            //spriteBatch.Draw(background, new Rectangle(0, 0, 1280, 720), Color.White);
             ScreenManager.Instance.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);

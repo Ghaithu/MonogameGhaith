@@ -71,11 +71,7 @@ namespace APMonogame
             scale = alpha = 1.0f;
             isActive = false;
 
-            //source rect for IDLE animation
-            //if (image != null && frames != Vector2.Zero)
-               
-            //else
-            //    sourceRect = new Rectangle(0, 0, image.Width, image.Height);
+            
 
         }
 
@@ -86,7 +82,6 @@ namespace APMonogame
             position = Vector2.Zero;
             sourceRect = Rectangle.Empty;
             image = null;
-            //color = Color.Black;
            
         }
         public virtual void Update(GameTime gameTime)

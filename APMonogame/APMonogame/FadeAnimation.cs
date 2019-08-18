@@ -15,7 +15,7 @@ namespace APMonogame
         bool increase;
         float fadeSpeed;
         TimeSpan defaultTime, timer;
-        //bool startTimer;
+        public static float slowFade;
         float activateValue;
         bool stopUpdating;
         float defaultAlpha;
@@ -66,6 +66,7 @@ namespace APMonogame
             activateValue = 0.0f;
             stopUpdating = false;
             defaultAlpha = alpha;
+            slowFade = 0.1f;
         }
 
 

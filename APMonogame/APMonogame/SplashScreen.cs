@@ -20,7 +20,7 @@ namespace APMonogame
 
         int imageNumber;
 
-        //FadeAnimation FAnimation; not working t38
+       
 
         public override void LoadContent(ContentManager Content, InputManager inputManager)
         {
@@ -29,8 +29,7 @@ namespace APMonogame
                 font = this.content.Load<SpriteFont>("Font1");
             imageNumber = 0;
             fileManager = new FileManager();
-            fade = new List<FadeAnimation>();
-            //FAnimation = new FadeAnimation(); not working t38
+            fade = new List<FadeAnimation>();        
             images = new List<Texture2D>();
 
             fileManager.LoadContent("Load/Splash.vke", attributes, contents);
@@ -47,11 +46,15 @@ namespace APMonogame
                     }
                 }
             }
+
             for (int i = 0; i < attributes.Count; i++)
             {
-                fade[i].LoadContent(content, images[i],"", new Vector2(-230,-70));
-                fade[i].Scale = 1.2f;
+                fade[i].LoadContent(content, images[i],"", new Vector2(0,0));
+                fade[i].Scale = 1f;
                 fade[i].IsActive = true;
+                fade[i].FadeSpeed = 0.08f;
+                fade[1].IsActive = false;
+
             }
         }
         public override void UnloadContent()
@@ -76,10 +79,15 @@ namespace APMonogame
                 imageNumber++;
             if(imageNumber >= fade.Count - 1 || inputManager.KeyPressed(Keys.Z))
             {
+               
                 ScreenManager.Instance.AddScreen(new TitleScreen(), inputManager);
             }
+            else if (imageNumber >= fade.Count - 1 || inputManager.KeyPressed(Keys.R))
+            {
+                imageNumber++;
+            }
 
-            Debug.WriteLine(imageNumber);
+
 
         }
 

@@ -135,6 +135,18 @@
 /processorParam:TextureFormat=Color
 /build:newtileSet1.png
 
+#begin newtileSet2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:newtileSet2.png
+
 #begin null.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -182,6 +194,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:RunSpritesEnemy.png
+
+#begin SplashScreen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SplashScreen.png
+
+#begin SplashScreen2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SplashScreen2.png
 
 #begin tileSet.png
 /importer:TextureImporter

@@ -13,12 +13,18 @@ namespace APMonogame
     public class Player:Entity
     {
         float jumpSpeed = 2400f;
+        int playerLives;
         public FloatRect Rect
         {
             get { return new FloatRect(position.X, position.Y, moveAnimation.FrameWidth, moveAnimation.FrameHeight); }
 
         }
 
+        public int PlayerLives
+        {
+            get { return playerLives; }
+            set { playerLives = value; }
+        }
 
         public override void LoadContent(ContentManager content, InputManager inputManager)
         {

@@ -33,17 +33,8 @@ namespace APMonogame
             map.LoadContent(content,map, $"Map{id}");
             loaded = true;
 
-            
-
-
             if (random)
                 loaded = true;
-
-            
-
-
-
-
 
         }
 
@@ -57,18 +48,19 @@ namespace APMonogame
 
         public override void Update(GameTime gameTime)
         {
-            //Console.WriteLine(map1End);
+            
             inputManager.Update();
             player.Update(gameTime, inputManager, map.layer);
             enemy.Update(gameTime, inputManager, map.layer);
 
-            if (!loaded && map1End)
+            if (!loaded && map1End || !loaded && map2End || !loaded && map3End)
             {
                 loaded = true;               
                 map.LoadContent(content, map, $"Map{id}");
 
             }
-            map.Update(gameTime, ref player/*, ref enemy*/);
+
+            map.Update(gameTime, ref player);
             
         }
 
