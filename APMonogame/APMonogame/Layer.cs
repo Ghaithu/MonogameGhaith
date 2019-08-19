@@ -58,8 +58,7 @@ namespace APMonogame
                             break;
                         case "Solid":
                             solid.Add(contents[i][j]);
-                            break;
-                        
+                            break;                       
                         case "Motion":
                             motion.Add(contents[i][j]);
                             break;
@@ -113,13 +112,13 @@ namespace APMonogame
             }
         }
 
-        public void Update(GameTime gameTime,ref Player player/*, ref Enemy enemy*/)
+        public void Update(GameTime gameTime,ref Player player)
         {
             for (int i = 0; i < tiles.Count; i++)
             {
                 for (int j = 0; j < tiles[i].Count; j++)
                 {
-                    tiles[i][j].Update(gameTime, ref player/*, ref enemy*/);
+                    tiles[i][j].Update(gameTime, ref player);
                 }
             }
         }

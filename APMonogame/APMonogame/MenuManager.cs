@@ -23,12 +23,21 @@ namespace APMonogame
 
         ContentManager content;   
         FileManager fileManager;
+        Player player;
+        DeathScreen deathScreen;
 
 
 
         int itemNumber;
         int axis;
         string align = "";
+        int screen;
+
+        public int Screen
+        {
+            get { return screen; }
+            set { screen = value; }
+        }
 
         Vector2 position;        
         Rectangle source;
@@ -57,7 +66,7 @@ namespace APMonogame
         {
             Vector2 dimensions = Vector2.Zero;
             Vector2 pos = Vector2.Zero;
-            
+
             if (align.Contains("Center"))
             {
                 for (int i = 0; i < menuItems.Count; i++)
@@ -65,11 +74,11 @@ namespace APMonogame
                     dimensions.X += font.MeasureString(menuItems[i]).X + menuImages[i].Width;
                     dimensions.Y += font.MeasureString(menuItems[i]).Y + menuImages[i].Height;
                 }
-                if(axis == 1)
+                if (axis == 1)
                 {
                     pos.X = (ScreenManager.Instance.Dimensions.X - dimensions.X) / 2;
                 }
-                else if(axis == 2)
+                else if (axis == 2)
                 {
                     pos.Y = (ScreenManager.Instance.Dimensions.Y - dimensions.Y) / 2;
                 }
@@ -79,8 +88,8 @@ namespace APMonogame
                 pos = position;
             }
             tempAnimation = new List<Animation>();
-            
-            for(int i = 0; i< menuImages.Count; i++)
+
+            for (int i = 0; i < menuImages.Count; i++)
             {
                 dimensions = new Vector2(font.MeasureString(menuItems[i]).X + menuImages[i].Width, font.MeasureString(menuItems[i]).Y + menuImages[i].Height);
 
@@ -91,7 +100,7 @@ namespace APMonogame
 
                 for (int j = 0; j < animationTypes.Count; j++)
                 {
-                    switch(animationTypes[j])
+                    switch (animationTypes[j])
                     {
                         case "Fade":
                             tempAnimation.Add(new FadeAnimation());
@@ -106,25 +115,14 @@ namespace APMonogame
                     animation.Add(tempAnimation);
                 tempAnimation = new List<Animation>();
 
-                //animation.Add(new Animation());
-                //    animation[animation.Count - 1].LoadContent(content, menuImages[i], menuItems[i], pos);
-                //    animation[animation.Count - 1].Font = font;
-                      //break;      
-                           
-                          
-
-                    
-                
-                
-
-               
-                if (axis == 1)                
-                    pos.X += dimensions.X;                
-                else                
+                if (axis == 1)
+                    pos.X += dimensions.X;
+                else
                     pos.Y += dimensions.Y;
-                
+
             }
         }
+
         #endregion
         #region Main Methods
 
@@ -140,12 +138,14 @@ namespace APMonogame
             contents = new List<List<string>>();
             linkType = new List<string>();
             linkID = new List<string>();
-           
+            player = new Player();
+            deathScreen = new DeathScreen();
             itemNumber = 0;
+            screen = 1;
 
             position = Vector2.Zero;
             fileManager = new FileManager();
-            fileManager.LoadContent("Load/Menus.vke", attributes, contents);
+            fileManager.LoadContent($"Load/Menus{screen}.vke", attributes, contents);
 
             for (int i = 0; i < attributes.Count; i++)
             {
@@ -168,10 +168,6 @@ namespace APMonogame
                         case "Position":
                             string[] temp = contents[i][j].Split(' ');
                             position = new Vector2(float.Parse(temp[0]), float.Parse(temp[1]));
-                            break;
-                        case "Source":
-                            temp = contents[i][j].Split(' ');
-                            source = new Rectangle(int.Parse(temp[0]), int.Parse(temp[1]), int.Parse(temp[2]), int.Parse(temp[3]));
                             break;
                         case "Animation":
                             animationTypes.Add(contents[i][j]);
@@ -207,6 +203,11 @@ namespace APMonogame
 
         public void Update(GameTime gameTime, InputManager inputManager)
         {
+            //if (deathScreen.IsLoaded == true)
+            //{
+            //    screen = "Death";
+            //}
+
             if (axis == 1)
             {
                 if (inputManager.KeyPressed(Keys.Right, Keys.D))

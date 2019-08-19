@@ -12,7 +12,7 @@ namespace APMonogame
     public class Map
     {
         public Layer layer;
-        //public Collision collision;
+        
         string id;
         public string ID
         {
@@ -22,23 +22,22 @@ namespace APMonogame
         public void LoadContent(ContentManager content, Map map,string mapID)
         {
             layer = new Layer();
-            //collision = new Collision();
+          
             id = mapID;
 
             layer.LoadContent(map, "Layer1");
-            //collision.LoadContent(content, mapID);
+          
 
         }
 
         public void UnloadContent()
         {
-            //layer.UnloadContent();
-            //collision.UnloadContent();
+            
         }
 
-        public void Update(GameTime gameTime, ref Player player/*, ref Enemy enemy*/)
+        public void Update(GameTime gameTime, ref Player player)
         {
-            layer.Update(gameTime, ref player/*, ref enemy*/);
+            layer.Update(gameTime, ref player);
 
         }
 

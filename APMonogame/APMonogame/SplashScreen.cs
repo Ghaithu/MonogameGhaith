@@ -52,7 +52,7 @@ namespace APMonogame
                 fade[i].LoadContent(content, images[i],"", new Vector2(0,0));
                 fade[i].Scale = 1f;
                 fade[i].IsActive = true;
-                fade[i].FadeSpeed = 0.08f;
+                fade[i].FadeSpeed = 0.045f;
                 fade[1].IsActive = false;
 
             }

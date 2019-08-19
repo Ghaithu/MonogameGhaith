@@ -13,7 +13,9 @@ namespace APMonogame
     public class Player:Entity
     {
         float jumpSpeed = 2400f;
-        int playerLives;
+        int playerLives = 5;
+        SpriteFont font;
+        Tile keyTile;
         public FloatRect Rect
         {
             get { return new FloatRect(position.X, position.Y, moveAnimation.FrameWidth, moveAnimation.FrameHeight); }
@@ -32,8 +34,10 @@ namespace APMonogame
             fileManager = new FileManager(); 
             moveAnimation = new SpriteSheetAnimation();
             Vector2 tempFrames = Vector2.Zero;
+            keyTile = new Tile();
             moveSpeed = 350f;
-            
+            font = content.Load<SpriteFont>("MenuFont");
+
 
             fileManager.LoadContent("Load/Player.vke", attributes, contents);
             for (int i = 0; i < attributes.Count; i++)
@@ -68,7 +72,7 @@ namespace APMonogame
             moveAnimation.UnloadContent();
         }
 
-        public override void Update(GameTime gameTime, InputManager input/*, Collision col*/, Layer layer)
+        public override void Update(GameTime gameTime, InputManager input, Layer layer)
         {
             syncTilePosition = false;
             prevPosition = position;
@@ -113,6 +117,9 @@ namespace APMonogame
         public override void Draw(SpriteBatch spriteBatch)
         {
             moveAnimation.Draw(spriteBatch);
+            spriteBatch.DrawString(font, $"Lives:{playerLives}", new Vector2(0, 50), Color.White);
+            spriteBatch.DrawString(font, $"Keys:{keyTile.KeyCounter}", new Vector2(0, 90), Color.White);
+
         }
     }
 }

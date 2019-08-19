@@ -12,6 +12,7 @@ namespace APMonogame
 {
     public class Tile:GameplayScreen
     {
+        #region Variables & Objects
         public enum State { Solid, Passive, Trap, Door, Key };
         public enum Motion { Static, Horizontal, Vertical };
 
@@ -21,6 +22,9 @@ namespace APMonogame
         
         Vector2 position, prevPosition, velocity;
         Texture2D tileImage;
+        DeathScreen deathScreen = new DeathScreen();
+        MenuManager menu = new MenuManager();
+        Animation animation;
 
         float range;
         int counter;
@@ -33,8 +37,15 @@ namespace APMonogame
         bool placeHolder;
         bool isTrapped;
         int oldKeys;
-
-        Animation animation;
+        
+        public int KeyCounter
+        {
+            get { return keyCounter; }
+            set { keyCounter = value; }
+        }
+        #endregion
+        #region HelpMethods
+        //to be explained
         private Texture2D CropImage(Texture2D tileSheet, Rectangle tileArea)
         {
             Texture2D croppedImage = new Texture2D(tileSheet.GraphicsDevice, tileArea.Width, tileArea.Height);
@@ -56,7 +67,7 @@ namespace APMonogame
             croppedImage.SetData<Color>(croppedImageData);
             return croppedImage;
         }
-
+        //tobeexplained
         public void SetTile(State state, Motion motion, Vector2 position, Texture2D tileSheet, Rectangle tileArea)
         {
             
@@ -79,15 +90,15 @@ namespace APMonogame
 
 
         }
-
+        //Key Tracker
         public void increment()
         {
-            if (keyCounter != 2 && !GameplayScreen.map1End)
+            if (keyCounter != 2 && !mapChange.Map1End)
                 keyCounter++;
-            else if (keyCounter != 4 && !GameplayScreen.map2End)
+            else if (keyCounter != 4 && !mapChange.Map2End)
                 keyCounter++;
-
-            oldKeys = keyCounter;
+            else if (keyCounter != 6 && !mapChange.Map3End)
+                keyCounter++;
 
             Console.WriteLine($"keys = {keyCounter}");
             Console.WriteLine($"old key = {oldKeys}");
@@ -98,9 +109,8 @@ namespace APMonogame
         {
             oldKeys = keyCounter;
         }
-
-     
-
+        #endregion
+        #region Gameloop, Collision & Draw
         public void Update(GameTime gameTime, ref Player player)
         {
             id = 0;
@@ -160,17 +170,39 @@ namespace APMonogame
             }
 
             //Falling off map respawn
-            if (player.Position.Y > 1400)
+            if (player.Position.Y > 1400 && !map1End)
             {
                 
-                    player.Position = new Vector2(0, 100);
-                
-                
+                player.Position = new Vector2(50, 450);
                 Console.WriteLine("you're under");
-                //keyCounter--;
+                if (keyCounter <= 0)
+                    keyCounter = 0;
+
+                player.PlayerLives--;
+                Console.WriteLine($"Keys={keyCounter}, Lives={player.PlayerLives}");
+                Console.WriteLine(deathScreen.IsLoaded);
+                
+
+            }
+            else if(player.Position.Y > 1400 && map1End && !map2End || player.Position.Y > 1400 && map1End && map2End)
+            {
+                player.Position = new Vector2(45, 45);
+                Console.WriteLine("you're under");
+                player.PlayerLives--;
                 if (keyCounter <= 0)
                     keyCounter = 0;
                 Console.WriteLine($"Keys={keyCounter}");
+            }
+
+            //reset
+            if(player.PlayerLives == 0)
+            {
+                mapChange.ID = 1;
+                keyCounter = 0;
+                mapChange.Map1End = false;
+                mapChange.Map2End = false;
+                mapChange.Map3End = false;
+                mapChange.Loaded = true;
 
 
             }
@@ -199,33 +231,36 @@ namespace APMonogame
                     player.Velocity = new Vector2(player.Velocity.X, 0);
                     player.ActiveateGravity = true;
                 }
+
+                
                 else
                 {
                     player.Position -= player.Velocity;
                 }
             }
-
+            //Trap Collision
             else if (player.Rect.Intersects(rect) && state == State.Trap)
             {
                 if (id != 1)
                 {
+                    player.PlayerLives--;
                     isTrapped = true;
                     id = 1;
                     if (isTrapped && !placeHolder)
                     {
-                        player.Position = new Vector2(0, 100);
+                        if (!Map1End)
+                            player.Position = new Vector2(50, 450);
+                        else
+                            player.Position = new Vector2(45, 45);
                     }
                     placeHolder = true;
                     Console.WriteLine($"You dead and have {keyCounter} keys.");
-
-                    //keyCounter--;
                     if (keyCounter <= 0)
                         keyCounter = 0;
                 }
 
             }
-
-
+            //Key Collision
             else if (player.Rect.Intersects(rect) && state == State.Key)
             {
 
@@ -240,31 +275,46 @@ namespace APMonogame
 
 
             }
+            //Door Collision
             else if (player.Rect.Intersects(rect) && state == State.Door && keyCounter == 2)
             {
-                if (!GameplayScreen.map1End)
+                if (!mapChange.Map1End)
                 { 
-                    GameplayScreen.id++;
-                    GameplayScreen.loaded = false;
-                    GameplayScreen.map1End = true;
-                    player.Position = new Vector2(0, 0);
-                    keyCounter--;
+                    mapChange.ID++;
+                    mapChange.Loaded = false;
+                    mapChange.Map1End = true;
+                    player.Position = new Vector2(45, 45);
                     if (keyCounter <= 0)
                       keyCounter = 0;
                 }
             }
             else if(player.Rect.Intersects(rect) && state == State.Door && keyCounter == 4)
             {
-
-                GameplayScreen.id++;
-                GameplayScreen.loaded = false;
-                GameplayScreen.map2End = true;
-                player.Position = new Vector2(0, 0);
-                if (keyCounter <= 0)
-                    keyCounter = 0;
+                if (!mapChange.Map2End)
+                {
+                    mapChange.ID++;
+                    mapChange.Loaded = false;
+                    mapChange.Map2End = true;
+                    player.Position = new Vector2(45, 45);
+                    if (keyCounter <= 0)
+                        keyCounter = 0;
+                }
+            }
+            else if (player.Rect.Intersects(rect) && state == State.Door && keyCounter == 6)
+            {
+                if (!mapChange.Map3End)
+                {
+                    mapChange.ID++;
+                    mapChange.Loaded = false;
+                    mapChange.Map3End = true;
+                    player.Position = new Vector2(45, 45);
+                    if (keyCounter <= 0)
+                        keyCounter = 0;
+                }
             }
 
-            
+
+
             player.Animation.Position = player.Position;
        
         }
@@ -273,5 +323,6 @@ namespace APMonogame
         {
             animation.Draw(spriteBatch);
         }
+        #endregion
     }
 }

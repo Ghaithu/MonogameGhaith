@@ -1,12 +1,10 @@
-﻿Load=[Title]
+﻿Load=[Death]
 
 Load=[Axis][Font][Animation][Align]
 [2][MenuFont][Fade][Center]
 
 Load=[Item][LinkType][LinkID]
-[New Game][Screen][GameplayScreen]
-[Story & Controls][Screen][SplashScreen]
+[Play again][Screen][GameplayScreen]
 [Exit][Screen][SplashScreen]
 
-
-EndLoad=[Title]
+EndLoad=[Death]
