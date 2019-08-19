@@ -36,8 +36,13 @@ namespace APMonogame
         bool isGrabbing;
         bool placeHolder;
         bool isTrapped;
-        int oldKeys;
+        static int prevLives;
         
+        public int PrevLives
+        {
+            get { return prevLives; }
+            set { prevLives = value; }
+        }
         public int KeyCounter
         {
             get { return keyCounter; }
@@ -81,7 +86,7 @@ namespace APMonogame
             moveSpeed = 100f;
             range = 50;
             counter = 0;
-            
+            prevLives = 0;
             animation = new Animation();
             animation.LoadContent(ScreenManager.Instance.Content, tileImage, "", position);
             
@@ -99,20 +104,20 @@ namespace APMonogame
                 keyCounter++;
             else if (keyCounter != 6 && !mapChange.Map3End)
                 keyCounter++;
+            else if (KeyCounter != 6 && !mapChange.GameEnd)
+                keyCounter++;
 
             Console.WriteLine($"keys = {keyCounter}");
-            Console.WriteLine($"old key = {oldKeys}");
+            
 
         }
 
-        public void prevState()
-        {
-            oldKeys = keyCounter;
-        }
+        
         #endregion
         #region Gameloop, Collision & Draw
         public void Update(GameTime gameTime, ref Player player)
         {
+            prevLives = player.PlayerLives;
             id = 0;
             isGrabbing = false;
             placeHolder = false;
@@ -170,7 +175,7 @@ namespace APMonogame
             }
 
             //Falling off map respawn
-            if (player.Position.Y > 1400 && !map1End)
+            if (player.Position.Y > 1400 && !mapChange.Map1End)
             {
                 
                 player.Position = new Vector2(50, 450);
@@ -184,7 +189,7 @@ namespace APMonogame
                 
 
             }
-            else if(player.Position.Y > 1400 && map1End && !map2End || player.Position.Y > 1400 && map1End && map2End)
+            else if(player.Position.Y > 1400 && mapChange.Map1End && !mapChange.Map2End || player.Position.Y > 1400 && mapChange.Map1End && mapChange.Map2End)
             {
                 player.Position = new Vector2(45, 45);
                 Console.WriteLine("you're under");
@@ -205,6 +210,16 @@ namespace APMonogame
                 mapChange.Loaded = true;
 
 
+            }
+            if(mapChange.GameEnd)
+            {
+                mapChange.ID = 1;
+                keyCounter = 0;
+                mapChange.Map1End = false;
+                mapChange.Map2End = false;
+                mapChange.Map3End = false;
+                mapChange.Loaded = true;
+                mapChange.GameEnd = false;
             }
 
             //Solid PLAYER COLLISION
@@ -311,6 +326,11 @@ namespace APMonogame
                     if (keyCounter <= 0)
                         keyCounter = 0;
                 }
+            }
+            else if (player.Rect.Intersects(rect) && state == State.Door && keyCounter == 7)
+            {
+                mapChange.GameEnd = true;
+
             }
 
 

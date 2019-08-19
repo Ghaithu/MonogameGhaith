@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace APMonogame
 {
-    public class DeathScreen:GameScreen
+    class GameWin:GameScreen
     {
         SpriteFont font;
         MenuManager menu;
         Player player;
-        Texture2D urded;
+        Tile tile;
+        Texture2D youWin;
         bool isLoaded;
         public bool IsLoaded
         {
@@ -26,23 +27,25 @@ namespace APMonogame
             isLoaded = true;
             base.LoadContent(Content, inputManager);
             if (font == null)
-                font = this.content.Load<SpriteFont>("Font1");
+                font = this.content.Load<SpriteFont>("MenuFont");
             menu = new MenuManager();
+            tile = new Tile();
             player = new Player();
             menu.LoadContent(content, "Death");
-            urded = content.Load<Texture2D>("RealGameOver");
+
+            youWin = content.Load<Texture2D>("TestGameWin");
 
         }
         public override void UnloadContent()
         {
-            
+
             base.UnloadContent();
             menu.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-           
+
             inputManager.Update();
             menu.Update(gameTime, inputManager);
 
@@ -50,8 +53,9 @@ namespace APMonogame
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(urded, new Rectangle(0, 0, 1280, 720), Color.White);
-
+            
+            spriteBatch.Draw(youWin, new Rectangle(0, 0, 1280, 720), Color.White);
+            spriteBatch.DrawString(font, $"You finished with {tile.PrevLives} lives remaining!", new Vector2(450, 630), Color.White);
             menu.Draw(spriteBatch);
         }
     }

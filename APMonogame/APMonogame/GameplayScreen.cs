@@ -14,11 +14,12 @@ namespace APMonogame
         Player player;
         Map map;
         DeathScreen deathScreen;
-        public static int id = 1;
-        public static bool loaded;
-        public static bool map1End;
-        public static bool map2End;
-        public static bool map3End;
+         public static int id = 1;
+         public static bool loaded;
+         public static bool map1End;
+         public static bool map2End;
+         public static bool map3End;
+       public static bool gameEnd;
         Texture2D background;
         bool random;
         public bool Loaded
@@ -39,8 +40,14 @@ namespace APMonogame
         }
         public bool Map3End
         {
-            get { return map2End; }
-            set { map2End = value; }
+            get { return map3End; }
+            set { map3End = value; }
+        }
+
+        public bool GameEnd
+        {
+            get { return gameEnd; }
+            set { gameEnd = value; }
         }
         public int ID
         {
@@ -91,6 +98,11 @@ namespace APMonogame
                 ScreenManager.Instance.AddScreen(new DeathScreen(), inputManager);
                 
 
+            }
+
+            if(gameEnd)
+            {
+                ScreenManager.Instance.AddScreen(new GameWin(), inputManager);
             }
 
             map.Update(gameTime, ref player);

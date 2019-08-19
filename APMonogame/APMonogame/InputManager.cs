@@ -11,6 +11,7 @@ namespace APMonogame
 {
     public class InputManager
     {
+        #region Variables & Properties
         KeyboardState prevKeyState, keyState;
         public KeyboardState PrevKeyState
         {
@@ -22,18 +23,20 @@ namespace APMonogame
             get { return keyState; }
             set { keyState = value; }
         }
+        #endregion
         public void Update()
         {
             prevKeyState = keyState;
             keyState = Keyboard.GetState();
         }
+        #region Check for Key presses
         public bool KeyPressed(Keys key)
         {
             if (keyState.IsKeyDown(key) && prevKeyState.IsKeyUp(key))
                 return true;
             return false;           
         }
-
+        //Verschillende buttons assignen voor zelfde functie
         public bool KeyPressed(params Keys[] keys)
         {
             foreach(Keys key in keys)
@@ -51,6 +54,7 @@ namespace APMonogame
             return false;
         }
 
+        //Verschillende buttons assignen voor zelfde functie
         public bool KeyReleased(params Keys[] keys)
         {
             foreach (Keys key in keys)
@@ -67,6 +71,7 @@ namespace APMonogame
                 return true;
             return false;
         }
+        //Verschillende buttons assignen voor zelfde functie
         public bool KeyDown(params Keys[] keys)
         {
             foreach (Keys key in keys)
@@ -76,6 +81,7 @@ namespace APMonogame
             }
             return false;
         }
+        #endregion
 
     }
 }

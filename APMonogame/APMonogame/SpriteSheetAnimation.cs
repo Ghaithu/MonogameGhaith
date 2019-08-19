@@ -14,12 +14,8 @@ namespace APMonogame
 
         int frameCounter;
         int switchFrame;
-        
-
         Vector2 frames;
         Vector2 currentFrame;
-
-
 
         public Texture2D Image
         {
@@ -48,7 +44,7 @@ namespace APMonogame
 
         public int FrameHeight
         {
-            get { return image.Width / (int)frames.Y; }
+            get { return image.Height / (int)frames.Y; }
         }
 
         public SpriteSheetAnimation()
@@ -70,7 +66,7 @@ namespace APMonogame
             switchFrame = 100;
             frames = new Vector2(3, 4);
             currentFrame = new Vector2(0, 0);
-            sourceRect = new Rectangle((int)currentFrame.X * FrameWidth, (int)currentFrame.Y * FrameHeight + 12, FrameWidth , FrameHeight);
+            sourceRect = new Rectangle((int)currentFrame.X * FrameWidth, (int)currentFrame.Y * FrameHeight, FrameWidth , FrameHeight);
         }
 
         public override void Update(GameTime gameTime)
@@ -79,11 +75,12 @@ namespace APMonogame
             if (isActive)
             {
                 frameCounter += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+                //switcht frames
                 if (frameCounter >= switchFrame)
                 {
                     frameCounter = 0;
                     currentFrame.X++;
-
+                    //scrollt door mijn spritesheet en als het het einde van mijn image tegen komt dan restart het opnieuw
                     if (currentFrame.X * FrameWidth >= image.Width)
                         currentFrame.X = 0;
 
@@ -98,7 +95,7 @@ namespace APMonogame
             }
             
             
-            sourceRect = new Rectangle((int)currentFrame.X * FrameWidth, (int)currentFrame.Y * FrameHeight +12, FrameWidth, FrameHeight);
+            sourceRect = new Rectangle((int)currentFrame.X * FrameWidth, (int)currentFrame.Y * FrameHeight, FrameWidth, FrameHeight);
 
         }
 

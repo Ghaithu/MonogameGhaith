@@ -10,8 +10,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace APMonogame
 {
+    //"abstract" klasse voor alle schermen
    public class GameScreen
-    {
+   {
         protected ContentManager content;
         protected List<List<string>> attributes, contents;
         protected InputManager inputManager;
@@ -34,5 +35,5 @@ namespace APMonogame
         public virtual void Draw(SpriteBatch spriteBatch) { }
 
 
-    }
+   }
 }

@@ -9,19 +9,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace APMonogame
 {
+    //another "Abstract" class
     public class Entity
     {
+        #region Variables & Properties
         protected int health;
         protected SpriteSheetAnimation moveAnimation;
-        protected float moveSpeed;
-        
+        protected float moveSpeed;     
         protected ContentManager content;
         protected FileManager fileManager;
-
         protected Texture2D image;
-
         protected List<List<string>> attributes, contents;
-
         protected Vector2 position;
         protected float gravity;
         protected Vector2 velocity;
@@ -61,7 +59,7 @@ namespace APMonogame
             get { return syncTilePosition; }
             set { syncTilePosition = value; }
         }
-
+        #endregion
         public virtual void LoadContent(ContentManager content, InputManager inputManager)
         {
             this.content = new ContentManager(content.ServiceProvider, "Content");
@@ -72,10 +70,10 @@ namespace APMonogame
 
         public virtual void UnloadContent()
         {
-            //content.Unload();
+            
         }
 
-        public virtual void Update(GameTime gameTime, InputManager inputManager/*, Collision col*/, Layer layer)
+        public virtual void Update(GameTime gameTime, InputManager inputManager, Layer layer)
         {
 
         }

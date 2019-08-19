@@ -10,19 +10,22 @@ using Microsoft.Xna.Framework.Input;
 
 namespace APMonogame
 {
+    //Deze klasse beheert alle screens die worden gebruikt
     class ScreenManager
     {
         #region Variables
+        //de huidge scherm (splash,title,ect...)
         GameScreen currentScreen;
+        //volgende scherm die bovenop de stack zal komen
         GameScreen newScreen;
         //creating custom content manager
         ContentManager content;
 
-        //ScreenManager Instance
+        //Singleton ScreenManager Instance zodat het global bereikbaar is
         private static ScreenManager instance;
 
 
-        //ScreenStack
+        //ScreenStack (keeping track of the current screens)
         Stack<GameScreen> screenStack = new Stack<GameScreen>();
         //screens width and height
         Vector2 dimensions;
@@ -57,6 +60,8 @@ namespace APMonogame
         #endregion
 
         #region Main Methods
+
+        //Methode die globaal wordt gebruikt om nieuwe schermen toe te voegen
         public void AddScreen(GameScreen screen, InputManager inputManager)
         {
             transition = true;
@@ -68,20 +73,7 @@ namespace APMonogame
 
 
         }
-        public void AddScreen(GameScreen screen, InputManager inputManager, float alpha)
-        {
-            transition = true;
-            newScreen = screen;
-            fade.IsActive = true;
-            fade.ActivateValue = 1.0f;
-            if (alpha != 1.0f)
-                fade.Alpha = 1.0f - alpha;
-            else
-                fade.Alpha = alpha;
-            fade.Increase = true;
-            this.inputManager = inputManager;
-
-        }
+        
 
         public Texture2D NullImage
         {
@@ -135,6 +127,7 @@ namespace APMonogame
         #endregion
 
         #region Private Methods
+        //Screen transisition method
         private void Transition(GameTime gameTime)
         {
             fade.Update(gameTime);

@@ -14,6 +14,10 @@ namespace APMonogame
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
+        public void Quit()
+        {
+            this.Exit();
+        }
         protected override void Initialize()
         {
             ScreenManager.Instance.Initialize();
@@ -27,7 +31,6 @@ namespace APMonogame
 
         protected override void LoadContent()
         {
-            background = Content.Load<Texture2D>("newBackground");
             this.IsMouseVisible = true;
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ScreenManager.Instance.LoadContent(Content);
@@ -45,7 +48,7 @@ namespace APMonogame
         {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
-            //spriteBatch.Draw(background, new Rectangle(0, 0, 1280, 720), Color.White);
+
             ScreenManager.Instance.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);

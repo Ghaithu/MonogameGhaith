@@ -79,13 +79,13 @@ namespace APMonogame
             moveAnimation.IsActive = true;
             if (input.KeyDown(Keys.Right, Keys.D))
             {
-                moveAnimation.CurrentFrame = new Vector2(moveAnimation.CurrentFrame.X, 0);
+                moveAnimation.CurrentFrame = new Vector2(moveAnimation.CurrentFrame.X, 2);
                 velocity.X = moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
                 
             else if (input.KeyDown(Keys.Left, Keys.A))
             {
-                moveAnimation.CurrentFrame = new Vector2(moveAnimation.CurrentFrame.X, 4);
+                moveAnimation.CurrentFrame = new Vector2(moveAnimation.CurrentFrame.Y, 0);
                 velocity.X = -moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             else

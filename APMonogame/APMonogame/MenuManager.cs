@@ -13,13 +13,15 @@ namespace APMonogame
     {
         #region Variables
 
-        
+        //items die via de externe file zullen upgeload worden
         List<string> menuItems;
+        //Animatie, link type en link ID die ook via de externe file worden upgeload
         List<string> animationTypes,linkType, linkID;
         List<Texture2D> menuImages;
         List<Animation> tempAnimation;
         List<List<Animation>> animation;
         List<List<string>> attributes, contents;
+        Game1 game;
 
         ContentManager content;   
         FileManager fileManager;
@@ -29,7 +31,7 @@ namespace APMonogame
 
 
         int itemNumber;
-        int axis;
+        //int axis;
         string align = "";
         int screen;
 
@@ -40,13 +42,12 @@ namespace APMonogame
         }
 
         Vector2 position;        
-        Rectangle source;
         SpriteFont font;
 
         #endregion
         #region Private Methods
 
-        
+        //hier gebruik ik null images voor reference, de bedoeling was om extra images in de menu te zetten
         private void SetMenuItems()
         {
             for (int i = 0; i < menuItems.Count; i++)
@@ -66,22 +67,19 @@ namespace APMonogame
         {
             Vector2 dimensions = Vector2.Zero;
             Vector2 pos = Vector2.Zero;
-
+            //centreren van de menu items
             if (align.Contains("Center"))
             {
+                //berekent de totale breedte en lengte van alle menu items samen
                 for (int i = 0; i < menuItems.Count; i++)
                 {
                     dimensions.X += font.MeasureString(menuItems[i]).X + menuImages[i].Width;
                     dimensions.Y += font.MeasureString(menuItems[i]).Y + menuImages[i].Height;
                 }
-                if (axis == 1)
-                {
-                    pos.X = (ScreenManager.Instance.Dimensions.X - dimensions.X) / 2;
-                }
-                else if (axis == 2)
-                {
-                    pos.Y = (ScreenManager.Instance.Dimensions.Y - dimensions.Y) / 2;
-                }
+                
+                //aftrekken van de dimenties van de menu items van de originele scherm lengte om een start positie te hebben
+                pos.Y = (ScreenManager.Instance.Dimensions.Y - dimensions.Y) / 2;
+                
             }
             else
             {
@@ -89,14 +87,13 @@ namespace APMonogame
             }
             tempAnimation = new List<Animation>();
 
+            //het inladen van fade animatie voor de menu items
             for (int i = 0; i < menuImages.Count; i++)
             {
                 dimensions = new Vector2(font.MeasureString(menuItems[i]).X + menuImages[i].Width, font.MeasureString(menuItems[i]).Y + menuImages[i].Height);
 
-                if (axis == 1)
-                    pos.Y = (ScreenManager.Instance.Dimensions.Y - dimensions.Y) / 2;
-                else
-                    pos.X = (ScreenManager.Instance.Dimensions.X - dimensions.X) / 2;
+                
+                pos.X = (ScreenManager.Instance.Dimensions.X - dimensions.X) / 2;
 
                 for (int j = 0; j < animationTypes.Count; j++)
                 {
@@ -115,9 +112,7 @@ namespace APMonogame
                     animation.Add(tempAnimation);
                 tempAnimation = new List<Animation>();
 
-                if (axis == 1)
-                    pos.X += dimensions.X;
-                else
+                
                     pos.Y += dimensions.Y;
 
             }
@@ -129,6 +124,7 @@ namespace APMonogame
         
         public void LoadContent(ContentManager content, string id)
         {
+            //variable instantiation
             this.content = new ContentManager(content.ServiceProvider, "Content");
             menuItems = new List<string>();
             menuImages = new List<Texture2D>();
@@ -142,9 +138,10 @@ namespace APMonogame
             deathScreen = new DeathScreen();
             itemNumber = 0;
             screen = 1;
-
             position = Vector2.Zero;
             fileManager = new FileManager();
+            game = new Game1();
+            //Het laden van attributes en contents van de menu
             fileManager.LoadContent($"Load/Menus{screen}.vke", attributes, contents);
 
             for (int i = 0; i < attributes.Count; i++)
@@ -161,9 +158,6 @@ namespace APMonogame
                             break;
                         case "Image":
                             menuImages.Add(this.content.Load<Texture2D>(contents[i][j]));
-                            break;
-                        case "Axis":
-                            axis = int.Parse(contents[i][j]);
                             break;
                         case "Position":
                             string[] temp = contents[i][j].Split(' ');
@@ -203,26 +197,13 @@ namespace APMonogame
 
         public void Update(GameTime gameTime, InputManager inputManager)
         {
-            //if (deathScreen.IsLoaded == true)
-            //{
-            //    screen = "Death";
-            //}
-
-            if (axis == 1)
-            {
-                if (inputManager.KeyPressed(Keys.Right, Keys.D))
-                    itemNumber++;
-                else if (inputManager.KeyPressed(Keys.Left, Keys.A))
-                    itemNumber--;
-            }
-            else
-            {
+            //Menu input
                 if (inputManager.KeyPressed(Keys.Down, Keys.S))
                     itemNumber++;
                 else if (inputManager.KeyPressed(Keys.Up, Keys.W))
                     itemNumber--;
-            }
-
+            
+            //Keuze van menu items
             if (inputManager.KeyPressed(Keys.Enter, Keys.Z))
             {
                 if (linkType[itemNumber] == "Screen")
@@ -230,13 +211,16 @@ namespace APMonogame
                     Type newClass = Type.GetType("APMonogame." + linkID[itemNumber]);
                     ScreenManager.Instance.AddScreen((GameScreen)Activator.CreateInstance(newClass), inputManager);
                 }
+                
                     
             }
 
+            //check voor itemnumbers nooit onder de 0 of hoger dan aantal itemnumbers
             if (itemNumber < 0)
                 itemNumber = 0;
             else if (itemNumber > menuItems.Count - 1)
                 itemNumber = menuItems.Count - 1;
+            //text animate toevoegen
             for(int i = 0; i < animation.Count; i++)
             {
                 for (int j = 0; j < animation[i].Count; j++)
